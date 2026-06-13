@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { MediaHero } from './sections/MediaHero';
 import { CreatorHero } from './sections/CreatorHero';
@@ -7,10 +7,16 @@ import { CreatorsEdition } from './sections/CreatorsEdition';
 import { ContactSection } from './sections/ContactSection';
 import { EditionToggle } from './components/EditionToggle';
 import { GiantMarquee } from './sections/GiantMarquee';
-import { AnimatedBackground } from './components/AnimatedBackground';
 import { ScrollToTop } from './components/ScrollToTop';
 import { MediaPhilosophy } from './sections/MediaPhilosophy';
 import { CreatorPhilosophy } from './sections/CreatorPhilosophy';
+
+const isMobile = window.innerWidth <= 768;
+
+// Lazy load the heavy animated background — only on desktop
+const AnimatedBackground = lazy(() =>
+  import('./components/AnimatedBackground').then(m => ({ default: m.AnimatedBackground }))
+);
 
 function App() {
   useEffect(() => {
@@ -27,55 +33,62 @@ function App() {
       <ScrollToTop />
       <div style={{ position: 'relative' }}>
         
-        {/* SVG Noise Filter Overlay for Authentic Newsprint Texture */}
-        <svg 
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            pointerEvents: 'none',
-            zIndex: 9999,
-            opacity: 0.35,
-            mixBlendMode: 'multiply'
-          }}
-        >
-          <filter id="noiseFilter">
-            <feTurbulence 
-              type="fractalNoise" 
-              baseFrequency="0.8" 
-              numOctaves="3" 
-              stitchTiles="stitch"
-            />
-          </filter>
-          <rect width="100%" height="100%" filter="url(#noiseFilter)" />
-        </svg>
+        {/* SVG Noise Filter — DESKTOP ONLY (kills mobile perf) */}
+        {!isMobile && (
+          <svg 
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100vw',
+              height: '100vh',
+              pointerEvents: 'none',
+              zIndex: 9999,
+              opacity: 0.3,
+              mixBlendMode: 'multiply'
+            }}
+          >
+            <filter id="noiseFilter">
+              <feTurbulence 
+                type="fractalNoise" 
+                baseFrequency="0.8" 
+                numOctaves="2" 
+                stitchTiles="stitch"
+              />
+            </filter>
+            <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+          </svg>
+        )}
 
-        <AnimatedBackground />
+        {/* Animated Background marquees — DESKTOP ONLY */}
+        {!isMobile && (
+          <Suspense fallback={null}>
+            <AnimatedBackground />
+          </Suspense>
+        )}
 
         <div style={{ position: 'relative', zIndex: 1 }}>
           {/* Universal Navbar */}
           <nav style={{ 
-            padding: 'clamp(0.5rem, 1vw, 1rem) clamp(1rem, 3vw, 3vw)', 
+            padding: isMobile ? '0.4rem 3vw' : 'clamp(0.5rem, 1vw, 1rem) clamp(1rem, 3vw, 3vw)', 
             display: 'grid', 
             gridTemplateColumns: '1fr auto 1fr', 
             alignItems: 'center', 
             position: 'fixed', 
-            top: '20px', 
+            top: isMobile ? '8px' : '20px', 
             left: '50%',
             transform: 'translateX(-50%)',
-            width: '95%',
-            borderRadius: '24px',
-            background: 'rgba(255, 255, 255, 0.4)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
+            width: isMobile ? '96%' : '95%',
+            borderRadius: isMobile ? '16px' : '24px',
+            background: isMobile ? 'rgba(255,253,231,0.92)' : 'rgba(255, 255, 255, 0.4)',
+            backdropFilter: isMobile ? 'none' : 'blur(20px)',
+            WebkitBackdropFilter: isMobile ? 'none' : 'blur(20px)',
             border: '1px solid rgba(255, 255, 255, 0.8)',
-            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.05)',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.06)',
             zIndex: 100 
           }}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <img src="/logo-nobg.png" alt="Baked Media Logo" style={{ height: 'clamp(45px, 6vw, 70px)', objectFit: 'contain' }} />
+              <img src="/logo-nobg.png" alt="Baked Media Logo" style={{ height: isMobile ? '32px' : 'clamp(45px, 6vw, 70px)', objectFit: 'contain' }} />
             </div>
             
             <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -96,7 +109,7 @@ function App() {
                   <div style={{ padding: '0 5vw' }}>
                     <MediaEdition />
                   </div>
-                  <GiantMarquee text="ARE YOU READY FOR YOUR NEXT MOVE?" />
+                  <GiantMarquee />
                   <MediaPhilosophy />
                   <div style={{ padding: '0 5vw' }}>
                     <ContactSection />
@@ -111,7 +124,7 @@ function App() {
                   <div style={{ padding: '0 5vw' }}>
                     <CreatorsEdition />
                   </div>
-                  <GiantMarquee text="THE CREATOR ECONOMY IS YOURS TO CONQUER" />
+                  <GiantMarquee />
                   <CreatorPhilosophy />
                   <div style={{ padding: '0 5vw' }}>
                     <ContactSection />
