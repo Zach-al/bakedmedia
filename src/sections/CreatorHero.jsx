@@ -53,7 +53,7 @@ export const CreatorHero = () => {
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            opacity: 0.25,
+            opacity: 0.45,
             zIndex: 0,
             pointerEvents: 'none'
           }} 
@@ -86,7 +86,11 @@ export const CreatorHero = () => {
           </>
         )}
 
-        <motion.div style={{ x: xTransform, whiteSpace: 'nowrap', display: 'flex', position: 'relative', zIndex: 1 }}>
+        <motion.div 
+          animate={{ y: [0, -10, 0] }}
+          transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+          style={{ x: xTransform, whiteSpace: 'nowrap', display: 'flex', position: 'relative', zIndex: 1 }}
+        >
           <h1 style={{
             fontFamily: 'var(--font-headline)',
             fontSize: isMobile ? 'clamp(4rem, 18vw, 8rem)' : 'clamp(8rem, 25vw, 25rem)',

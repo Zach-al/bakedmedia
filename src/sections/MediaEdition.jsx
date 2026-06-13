@@ -111,38 +111,38 @@ export const MediaEdition = () => {
         className="hide-scrollbar"
       >
         {posts.map((post, idx) => (
-          <div
+          <motion.div
             key={post.id}
-            className="newspaper-card"
+            className="glossy-bento-card"
+            whileHover={{ scale: 1.02 }}
             style={{
+              animation: `float ${5 + (idx % 3)}s ease-in-out infinite`,
               width: isMobile ? '280px' : '360px',
               flexShrink: 0,
               scrollSnapAlign: 'start',
               display: 'flex',
               flexDirection: 'column',
               overflow: 'hidden',
-              backgroundColor: 'var(--color-paper)',
-              border: isMobile ? '3px solid var(--color-ink)' : '4px solid var(--color-ink)',
-              boxShadow: isMobile ? '5px 5px 0px var(--color-highlight)' : '10px 10px 0px var(--color-highlight)',
             }}
           >
             {/* Card Header */}
             <div style={{
-              borderBottom: isMobile ? '3px solid var(--color-ink)' : '4px solid var(--color-ink)',
+              borderBottom: '1px solid rgba(255,255,255,0.4)',
               padding: isMobile ? '0.75rem 1rem' : '1.25rem 1.5rem',
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'center'
+              alignItems: 'center',
+              backgroundColor: 'rgba(255,255,255,0.1)'
             }}>
               <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, fontSize: isMobile ? '1rem' : '1.25rem', textTransform: 'uppercase' }}>{post.label}</span>
-              <span style={{ fontFamily: 'var(--font-sans)', fontSize: isMobile ? '0.7rem' : '0.85rem', fontWeight: 800, color: 'var(--color-paper)', backgroundColor: 'var(--color-ink)', padding: '0.15rem 0.6rem', border: '2px solid var(--color-ink)' }}>Vol. {idx + 1}</span>
+              <span style={{ fontFamily: 'var(--font-sans)', fontSize: isMobile ? '0.7rem' : '0.85rem', fontWeight: 800, color: 'var(--color-ink)', backgroundColor: 'rgba(255,255,255,0.5)', padding: '0.15rem 0.6rem', borderRadius: '100px', border: '1px solid rgba(255,255,255,0.8)' }}>Vol. {idx + 1}</span>
             </div>
 
             {/* Live Instagram Post via Lazy iframe */}
-            <div style={{ width: '100%', height: isMobile ? '380px' : '480px', overflow: 'hidden', backgroundColor: 'var(--color-paper)', position: 'relative' }}>
+            <div style={{ width: '100%', height: isMobile ? '380px' : '480px', overflow: 'hidden', position: 'relative' }}>
               <LazyIframe id={post.id} idx={idx} />
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 

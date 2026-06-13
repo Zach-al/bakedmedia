@@ -1,5 +1,6 @@
 import React, { useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { MediaHero } from './sections/MediaHero';
 import { CreatorHero } from './sections/CreatorHero';
 import { MediaEdition } from './sections/MediaEdition';
@@ -69,7 +70,11 @@ function App() {
 
         <div style={{ position: 'relative', zIndex: 1 }}>
           {/* Universal Navbar */}
-          <nav style={{ 
+          <motion.nav 
+            initial={{ y: -100, opacity: 0, x: '-50%' }}
+            animate={{ y: 0, opacity: 1, x: '-50%' }}
+            transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+            style={{ 
             padding: isMobile ? '0.4rem 3vw' : 'clamp(0.5rem, 1vw, 1rem) clamp(1rem, 3vw, 3vw)', 
             display: 'grid', 
             gridTemplateColumns: '1fr auto 1fr', 
@@ -77,18 +82,23 @@ function App() {
             position: 'fixed', 
             top: isMobile ? '8px' : '20px', 
             left: '50%',
-            transform: 'translateX(-50%)',
             width: isMobile ? '96%' : '95%',
             borderRadius: isMobile ? '16px' : '24px',
             background: isMobile ? 'rgba(255,253,231,0.92)' : 'rgba(255, 255, 255, 0.4)',
-            backdropFilter: isMobile ? 'none' : 'blur(20px)',
-            WebkitBackdropFilter: isMobile ? 'none' : 'blur(20px)',
+            backdropFilter: isMobile ? 'blur(8px)' : 'blur(20px)',
+            WebkitBackdropFilter: isMobile ? 'blur(8px)' : 'blur(20px)',
             border: '1px solid rgba(255, 255, 255, 0.8)',
             boxShadow: '0 4px 20px rgba(0, 0, 0, 0.06)',
             zIndex: 100 
           }}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <img src="/logo-nobg.png" alt="Baked Media Logo" style={{ height: isMobile ? '32px' : 'clamp(45px, 6vw, 70px)', objectFit: 'contain' }} />
+              <motion.img 
+                animate={{ y: [0, -4, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                src="/logo-nobg.png" 
+                alt="Baked Media Logo" 
+                style={{ height: isMobile ? '32px' : 'clamp(45px, 6vw, 70px)', objectFit: 'contain' }} 
+              />
             </div>
             
             <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -98,7 +108,7 @@ function App() {
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
               {/* Optional links */}
             </div>
-          </nav>
+          </motion.nav>
 
           <div style={{ position: 'relative', zIndex: 1, backgroundColor: 'var(--color-paper)' }}>
             <Routes>

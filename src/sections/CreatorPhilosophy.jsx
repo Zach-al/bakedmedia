@@ -60,14 +60,10 @@ export const CreatorPhilosophy = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.4, delay: i * 0.1 }}
+              className="glossy-bento-card"
               style={{
-                background: 'rgba(255,255,255,0.45)',
-                backdropFilter: 'blur(16px)',
-                WebkitBackdropFilter: 'blur(16px)',
-                border: '1px solid rgba(255,255,255,0.7)',
-                borderRadius: '20px',
+                animation: `float ${5 + i}s ease-in-out infinite`,
                 padding: '1.5rem',
-                boxShadow: '0 8px 24px rgba(0,0,0,0.04)',
               }}
             >
               <span style={{ fontFamily: 'var(--font-headline)', fontSize: '2rem', fontWeight: 900, color: 'var(--color-ink)', lineHeight: 1 }}>{card.num}</span>
@@ -124,12 +120,24 @@ export const CreatorPhilosophy = () => {
           style={{ x: xTransform }}
         >
           {cards.map((card, i) => (
-            <div className="philosophy-card" key={i}>
+            <div 
+              className="glossy-bento-card" 
+              key={i}
+              style={{
+                animation: `float ${5 + i}s ease-in-out infinite`,
+                width: '450px',
+                padding: '3rem',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                flexShrink: 0
+              }}
+            >
               <div>
                 <span style={{ fontFamily: 'var(--font-headline)', fontSize: '4rem', fontWeight: 900, color: 'var(--color-ink)', lineHeight: 1 }}>{card.num}</span>
                 <h3 style={{ fontFamily: 'var(--font-headline)', fontSize: '2rem', fontWeight: 800, marginTop: '1rem', textTransform: 'uppercase', whiteSpace: 'pre-line' }}>{card.title}</h3>
               </div>
-              <p style={{ fontFamily: 'var(--font-sans)', fontSize: '1.1rem', fontWeight: 500, lineHeight: 1.6 }}>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: '1.1rem', fontWeight: 500, lineHeight: 1.6, marginTop: '2rem' }}>
                 {card.text}
               </p>
             </div>

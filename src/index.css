@@ -298,19 +298,56 @@ button {
   }
 }
 
-/* MOBILE PERFORMANCE: kill all expensive GPU effects */
-@media (max-width: 768px) {
-  .editorial-card {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    background-color: rgba(255, 253, 231, 0.95) !important;
-    will-change: auto !important;
-  }
+/* GLOSSY BENTO CARDS & ANIMATIONS */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
 
-  .philosophy-card {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    background-color: rgba(255, 253, 231, 0.92) !important;
+@keyframes pulse-light {
+  0% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 0.8; transform: scale(1); }
+}
+
+.glossy-bento-card {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  position: relative;
+  will-change: transform;
+}
+
+.glossy-bento-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+  pointer-events: none;
+}
+
+.glossy-bento-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* SMART MOBILE PERFORMANCE: Allow glossy but optimized */
+@media (max-width: 768px) {
+  .editorial-card,
+  .philosophy-card,
+  .glossy-bento-card {
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    background-color: rgba(255, 253, 231, 0.65) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    /* Lower blur and higher opacity base for much better mobile rendering speed */
   }
 
   .bg-liquid-glass,
@@ -319,10 +356,6 @@ button {
   .bg-liquid-gradient-3 {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-  }
-
-  .bento-card {
-    will-change: auto !important;
   }
 }
 

@@ -107,7 +107,13 @@ export const ContactSection = () => {
       </div>
 
       {/* Footer */}
-      <div className="container" style={{ 
+      <motion.div 
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ type: "spring", stiffness: 100, damping: 20 }}
+        className="container" 
+        style={{ 
         display: 'flex', 
         flexDirection: 'column',
         justifyContent: 'center', 
@@ -123,17 +129,29 @@ export const ContactSection = () => {
         gap: '2rem'
       }}>
         
-        <img src="/logo-nobg.png" alt="Baked Media" style={{ height: 'clamp(80px, 15vw, 150px)', objectFit: 'contain' }} />
+        <motion.img 
+          animate={{ y: [0, -8, 0] }}
+          transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+          src="/logo-nobg.png" 
+          alt="Baked Media" 
+          style={{ height: 'clamp(80px, 15vw, 150px)', objectFit: 'contain' }} 
+        />
         
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
           <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.9rem', color: 'var(--color-ink-light)', fontWeight: 600 }}>
             © 2026 Baked Media. All rights reserved.
           </span>
-          <a href="https://www.instagram.com/bakedmedia.in/" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-sans)', fontSize: '0.9rem', color: 'var(--color-ink)', textDecoration: 'none', fontWeight: 700, textTransform: 'uppercase' }}>
+          <motion.a 
+            whileHover={{ scale: 1.05 }}
+            href="https://www.instagram.com/bakedmedia.in/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            style={{ fontFamily: 'var(--font-sans)', fontSize: '0.9rem', color: 'var(--color-ink)', textDecoration: 'none', fontWeight: 700, textTransform: 'uppercase' }}
+          >
             @bakedmedia.in
-          </a>
+          </motion.a>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
