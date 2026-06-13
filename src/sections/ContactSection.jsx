@@ -77,23 +77,28 @@ export const ContactSection = () => {
               zIndex: 1,
               borderRadius: '100px',
               padding: '1rem 3rem',
-              backgroundColor: 'var(--color-ink)',
-              color: 'var(--color-paper)',
+              backgroundColor: 'rgba(255, 255, 255, 0.25)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(28, 26, 24, 0.2)',
+              color: 'var(--color-ink)',
               fontFamily: 'var(--font-sans)',
               fontWeight: 800,
               fontSize: '1rem',
               textTransform: 'uppercase',
               textDecoration: 'none',
-              boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.5)',
               transition: 'all 0.3s ease'
             }}
             onMouseOver={(e) => {
               e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.boxShadow = '0 15px 30px rgba(0,0,0,0.15)';
+              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.4)';
+              e.currentTarget.style.boxShadow = '0 15px 30px rgba(0,0,0,0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.6)';
             }}
             onMouseOut={(e) => {
               e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 10px 20px rgba(0,0,0,0.1)';
+              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.25)';
+              e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.5)';
             }}
           >
             Enquire Now ↗

@@ -73,24 +73,28 @@ export const GiantMarquee = () => {
             display: 'inline-flex',
             alignItems: 'center',
             gap: '0.5rem',
-            background: 'var(--color-ink)',
-            color: 'var(--color-paper)',
+            background: 'rgba(255, 255, 255, 0.25)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            color: 'var(--color-ink)',
             fontFamily: 'var(--font-sans)',
             fontWeight: 800,
             fontSize: 'clamp(0.7rem, 1.8vw, 1.1rem)',
             padding: '0.75rem 2rem',
             borderRadius: '100px',
-            border: '2px solid var(--color-ink)',
+            border: '1px solid rgba(28, 26, 24, 0.2)',
             textTransform: 'uppercase',
             textDecoration: 'none',
-            boxShadow: '6px 6px 0px var(--color-highlight)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.5)',
             transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
           onMouseOver={(e) => {
             e.currentTarget.style.transform = 'scale(1.05) rotate(4deg)';
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.4)';
           }}
           onMouseOut={(e) => {
             e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.25)';
           }}
         >
           ENQUIRE NOW <span style={{ fontSize: '1em' }}>↗</span>

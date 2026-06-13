@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
+
+const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
 
 export const MediaEdition = () => {
   // VERIFIED real post shortcodes from @bakedmedia.in profile
@@ -12,15 +14,42 @@ export const MediaEdition = () => {
     { id: "DAqZx4sKFx_", label: "Campaign #6" }
   ];
 
+  const scrollRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // Track which card is visible via scroll position
+  const handleScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const cardWidth = isMobile ? 280 + 16 : 360 + 40; // card width + gap
+    const idx = Math.round(el.scrollLeft / cardWidth);
+    setActiveIndex(Math.min(idx, posts.length - 1));
+  }, [posts.length]);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener('scroll', handleScroll, { passive: true });
+    return () => el.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
+
+  // Scroll to a specific dot
+  const scrollToIndex = (idx) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const cardWidth = isMobile ? 280 + 16 : 360 + 40;
+    el.scrollTo({ left: idx * cardWidth, behavior: 'smooth' });
+  };
+
   const LazyIframe = ({ id, idx }) => {
     const [isLoaded, setIsLoaded] = React.useState(false);
     return (
       <div 
-        style={{ width: '100%', height: '480px', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        style={{ width: '100%', height: isMobile ? '380px' : '480px', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
         {!isLoaded && (
-          <div style={{ position: 'absolute', fontFamily: 'var(--font-headline)', color: 'var(--color-ink-light)' }}>
-            Loading Broadcast...
+          <div style={{ position: 'absolute', fontFamily: 'var(--font-headline)', color: 'var(--color-ink-light)', fontSize: '0.9rem' }}>
+            Loading...
           </div>
         )}
         <motion.div 
@@ -31,7 +60,7 @@ export const MediaEdition = () => {
             <iframe
               src={`https://www.instagram.com/p/${id}/embed/captioned/`}
               width="100%"
-              height="480"
+              height={isMobile ? "380" : "480"}
               frameBorder="0"
               scrolling="no"
               allowTransparency="true"
@@ -50,80 +79,91 @@ export const MediaEdition = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.6 }}
-      style={{ paddingBottom: '6rem', backgroundColor: 'var(--color-paper)' }}
+      transition={{ duration: 0.4 }}
+      style={{ paddingBottom: isMobile ? '2rem' : '6rem', backgroundColor: 'var(--color-paper)' }}
     >
-      <div className="container" style={{ paddingTop: '4rem', paddingBottom: '2rem' }}>
+      <div className="container" style={{ paddingTop: isMobile ? '2rem' : '4rem', paddingBottom: '1rem' }}>
         <motion.h2
-          initial={{ opacity: 0, x: -30 }}
+          initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           className="article-title"
-          style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', borderBottom: '1px solid rgba(0,0,0,0.1)', paddingBottom: '1rem', display: 'inline-block' }}
+          style={{ fontSize: 'clamp(1.5rem, 5vw, 4rem)', borderBottom: '1px solid rgba(0,0,0,0.1)', paddingBottom: '0.75rem', display: 'inline-block' }}
         >
           Media Archives
         </motion.h2>
-        <p style={{ fontFamily: 'var(--font-sans)', fontSize: '1.25rem', marginTop: '1rem', color: 'var(--color-ink-light)' }}>
+        <p style={{ fontFamily: 'var(--font-sans)', fontSize: isMobile ? '1rem' : '1.25rem', marginTop: '0.75rem', color: 'var(--color-ink-light)' }}>
           Swipe to explore our live digital broadcasts and campaigns.
         </p>
       </div>
 
       {/* Native Horizontal Scroll Container */}
       <div
+        ref={scrollRef}
         style={{
           display: 'flex',
           overflowX: 'auto',
           scrollSnapType: 'x mandatory',
-          padding: '2rem 5vw 4rem',
-          gap: '2.5rem',
+          padding: isMobile ? '1rem 4vw 1.5rem' : '2rem 5vw 4rem',
+          gap: isMobile ? '1rem' : '2.5rem',
           WebkitOverflowScrolling: 'touch'
         }}
         className="hide-scrollbar"
       >
         {posts.map((post, idx) => (
-          <motion.div
+          <div
             key={post.id}
-            initial={{ opacity: 0, y: 40, scale: 0.95 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, margin: "-30px" }}
-            transition={{ duration: 0.5, delay: idx * 0.08, type: 'spring', stiffness: 120 }}
             className="newspaper-card"
             style={{
-              width: '360px',
+              width: isMobile ? '280px' : '360px',
               flexShrink: 0,
               scrollSnapAlign: 'start',
               display: 'flex',
               flexDirection: 'column',
               overflow: 'hidden',
               backgroundColor: 'var(--color-paper)',
-              border: '4px solid var(--color-ink)',
-              boxShadow: '10px 10px 0px var(--color-highlight)',
-              transition: 'transform 0.2s ease',
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.transform = 'translateY(-5px)';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
+              border: isMobile ? '3px solid var(--color-ink)' : '4px solid var(--color-ink)',
+              boxShadow: isMobile ? '5px 5px 0px var(--color-highlight)' : '10px 10px 0px var(--color-highlight)',
             }}
           >
             {/* Card Header */}
             <div style={{
-              borderBottom: '4px solid var(--color-ink)',
-              padding: '1.25rem 1.5rem',
+              borderBottom: isMobile ? '3px solid var(--color-ink)' : '4px solid var(--color-ink)',
+              padding: isMobile ? '0.75rem 1rem' : '1.25rem 1.5rem',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center'
             }}>
-              <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, fontSize: '1.25rem', textTransform: 'uppercase' }}>{post.label}</span>
-              <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.85rem', fontWeight: 800, color: 'var(--color-paper)', backgroundColor: 'var(--color-ink)', padding: '0.2rem 0.8rem', border: '2px solid var(--color-ink)' }}>Vol. {idx + 1}</span>
+              <span style={{ fontFamily: 'var(--font-headline)', fontWeight: 900, fontSize: isMobile ? '1rem' : '1.25rem', textTransform: 'uppercase' }}>{post.label}</span>
+              <span style={{ fontFamily: 'var(--font-sans)', fontSize: isMobile ? '0.7rem' : '0.85rem', fontWeight: 800, color: 'var(--color-paper)', backgroundColor: 'var(--color-ink)', padding: '0.15rem 0.6rem', border: '2px solid var(--color-ink)' }}>Vol. {idx + 1}</span>
             </div>
 
             {/* Live Instagram Post via Lazy iframe */}
-            <div style={{ width: '100%', height: '480px', overflow: 'hidden', backgroundColor: 'var(--color-paper)', position: 'relative' }}>
+            <div style={{ width: '100%', height: isMobile ? '380px' : '480px', overflow: 'hidden', backgroundColor: 'var(--color-paper)', position: 'relative' }}>
               <LazyIframe id={post.id} idx={idx} />
             </div>
-          </motion.div>
+          </div>
+        ))}
+      </div>
+
+      {/* Dot Indicators */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', padding: '0.5rem 0 1rem' }}>
+        {posts.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={() => scrollToIndex(idx)}
+            aria-label={`Go to post ${idx + 1}`}
+            style={{
+              width: activeIndex === idx ? '24px' : '8px',
+              height: '8px',
+              borderRadius: '100px',
+              border: 'none',
+              backgroundColor: activeIndex === idx ? 'var(--color-ink)' : 'rgba(28,26,24,0.2)',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              padding: 0,
+            }}
+          />
         ))}
       </div>
     </motion.div>
