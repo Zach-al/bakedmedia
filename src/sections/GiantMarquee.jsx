@@ -17,28 +17,26 @@ export const GiantMarquee = () => {
     <section 
       ref={containerRef} 
       style={{ 
-        height: '100vh', 
+        height: 'clamp(50vh, 70vh, 100vh)', 
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'center',
         position: 'relative',
-        backgroundColor: 'var(--color-paper)', // Reverted to newspaper theme
+        backgroundColor: 'var(--color-paper)',
         overflow: 'hidden',
-        borderTop: '4px solid var(--color-ink)',
-        borderBottom: '4px solid var(--color-ink)'
+        borderTop: '3px solid var(--color-ink)',
+        borderBottom: '3px solid var(--color-ink)'
       }}
     >
-      {/* Remove the pitch-black subtle grid overlay */}
-
       <motion.div 
-        style={{ x: xTransform, position: 'absolute', whiteSpace: 'nowrap', display: 'flex', gap: '4rem', zIndex: 1 }}
+        style={{ x: xTransform, position: 'absolute', whiteSpace: 'nowrap', display: 'flex', gap: '2rem', zIndex: 1 }}
       >
         <span style={{
           fontFamily: 'var(--font-headline)',
-          fontSize: 'clamp(3rem, 12vw, 15rem)',
+          fontSize: 'clamp(2.5rem, 10vw, 15rem)',
           fontWeight: 900,
           whiteSpace: 'nowrap',
-          color: 'var(--color-ink)', // Reverted to ink
+          color: 'var(--color-ink)',
           lineHeight: 1,
           textTransform: 'uppercase',
           letterSpacing: '-0.04em'
@@ -47,10 +45,10 @@ export const GiantMarquee = () => {
         </span>
         <span style={{
           fontFamily: 'var(--font-headline)',
-          fontSize: 'clamp(3rem, 12vw, 15rem)',
+          fontSize: 'clamp(2.5rem, 10vw, 15rem)',
           fontWeight: 900,
           whiteSpace: 'nowrap',
-          color: 'var(--color-ink)', // Reverted to ink
+          color: 'var(--color-ink)',
           lineHeight: 1,
           textTransform: 'uppercase',
           letterSpacing: '-0.04em'
@@ -59,12 +57,12 @@ export const GiantMarquee = () => {
         </span>
       </motion.div>
 
-      {/* Floating Tilted Neon Button */}
+      {/* Floating Enquiry Button */}
       <motion.div 
         style={{ zIndex: 2, position: 'absolute' }}
         initial={{ scale: 0.8, opacity: 0, rotate: -20 }}
         whileInView={{ scale: 1, opacity: 1, rotate: -8 }}
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true, margin: "-50px" }}
         transition={{ type: "spring", stiffness: 200, damping: 15 }}
       >
         <a 
@@ -74,18 +72,18 @@ export const GiantMarquee = () => {
           style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '0.75rem',
-            background: 'var(--color-ink)', // Reverted neon to ink
+            gap: '0.5rem',
+            background: 'var(--color-ink)',
             color: 'var(--color-paper)',
             fontFamily: 'var(--font-sans)',
             fontWeight: 800,
-            fontSize: 'clamp(0.75rem, 2vw, 1.25rem)',
-            padding: 'clamp(0.8rem, 2vw, 1.5rem) clamp(1.5rem, 5vw, 4rem)',
+            fontSize: 'clamp(0.7rem, 1.8vw, 1.1rem)',
+            padding: '0.75rem 2rem',
             borderRadius: '100px',
             border: '2px solid var(--color-ink)',
             textTransform: 'uppercase',
             textDecoration: 'none',
-            boxShadow: '10px 10px 0px var(--color-highlight)', // High contrast shadow
+            boxShadow: '6px 6px 0px var(--color-highlight)',
             transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
           onMouseOver={(e) => {
@@ -95,7 +93,7 @@ export const GiantMarquee = () => {
             e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
           }}
         >
-          ENQUIRE NOW <span style={{ fontSize: '1.2em' }}>↗</span>
+          ENQUIRE NOW <span style={{ fontSize: '1em' }}>↗</span>
         </a>
       </motion.div>
     </section>
